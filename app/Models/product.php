@@ -34,7 +34,7 @@ class product extends Model
 
     public function category()
     {
-        return $this->belongsTo(category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function supplier()
@@ -44,11 +44,11 @@ class product extends Model
 
     public function consumption()
     {
-        return $this->hasMany(consumption::class);
+        return $this->hasMany(Consumption::class);
     }
 
     public function replenishment()
     {
-        return $this->hasMany(replenishment::class);
+        return $this->hasMany(Replenishment::class);
     }
 }
