@@ -86,7 +86,7 @@
                                     <label class="form-label">Description</label>
                                     <textarea name="description" class="form-control" cols="30" rows="5">{{ isset($product_data) ? $product_data->description : '' }}</textarea>
                                 </div>
-                                <div class="col-6" {{ isset($product_data) ? '' : 'hidden' }} >
+                                <div class="col-6" >
                                     <label class="form-label">Low Stock Threshold</label>
                                     <input type="number" class="form-control" name="low_stock_level" min="1" value="{{ isset($product_data) ? $product_data->low_stock_level : '10' }}"  >
                                 </div>
