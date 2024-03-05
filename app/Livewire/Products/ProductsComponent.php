@@ -79,7 +79,7 @@ class ProductsComponent extends Component
             $supplier_data = supplier::where('Is_Deleted' , '=' , 0)->get();
         }
         
-        $unit_data = unit::all();
+        $unit_data = unit::where('is_active',1)->orderBy('name','asc')->get();
 
         return view('livewire.products.products-new' , 
         compact('department_data' , 'category_data' , 'supplier_data' , 'unit_data')
@@ -114,7 +114,7 @@ class ProductsComponent extends Component
     public function edit($id)
     {
         $product_data = product::find($id);
-        $unit_data = unit::all();
+        $unit_data = unit::where('is_active',1)->orderBy('name','asc')->get();
 
         if(auth()->user()->usertype_id == 2){
             $department_data = department::where('Is_Deleted' , '=' , 0)->where('id' , '=' , auth()->user()->department_id)->get();
