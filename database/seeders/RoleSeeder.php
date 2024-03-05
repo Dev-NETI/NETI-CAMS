@@ -29,6 +29,22 @@ class RoleSeeder extends Seeder
             8 => ["Supplier (Settings Module)"],
             9 => ["Unit (Settings Module)"],
             10 => ["User Management Module"],
+            11 => ["Create Inventory (Inventory Module)"],
+            12 => ["Edit Inventory (Inventory Module)"],
+            13 => ["Consume Inventory (Inventory Module)"],
+            14 => ["Replenish Inventory (Inventory Module)"],
+            15 => ["Create Categories (Categories Settings)"],
+            16 => ["Edit Categories (Categories Settings)"],
+            17 => ["Delete Categories (Categories Settings)"],
+            18 => ["Create Supplier (Supplier Settings)"],
+            19 => ["Edit Supplier (Supplier Settings)"],
+            20 => ["Delete Supplier (Supplier Settings)"],
+            21 => ["Create Unit (Unit Settings)"],
+            22 => ["Edit Unit (Unit Settings)"],
+            23 => ["Delete Unit (Unit Settings)"],
+            24 => ["Create User (User Management)"],
+            25 => ["Change Password (User Management)"],
+            26 => ["Assign Roles (User Management)"],
         ];
 
         foreach($data as $index=>[$name]){

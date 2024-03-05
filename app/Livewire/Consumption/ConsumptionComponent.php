@@ -2,16 +2,24 @@
 
 namespace App\Livewire\Consumption;
 
-use App\Models\Consumption;
-use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Component;
+use App\Models\Consumption;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ConsumptionComponent extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
 
     public $search; 
+
+    public function mount()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 4);
+    }
 
     public function render()
     {

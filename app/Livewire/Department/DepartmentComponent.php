@@ -4,13 +4,21 @@ namespace App\Livewire\Department;
 
 use App\Http\Requests\DepartmentRequest;
 use App\Models\department;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class DepartmentComponent extends Component
 {
     use WithPagination;
+    use AuthorizesRequests;
     public $search;
+
+    public function mount()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 7);
+    }
 
     public function render()
     {

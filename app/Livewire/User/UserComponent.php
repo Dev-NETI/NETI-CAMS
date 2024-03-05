@@ -2,23 +2,31 @@
 
 namespace App\Livewire\User;
 
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Requests\UserRequest;
-use App\Models\department;
 use App\Models\User;
-use App\Models\User_type;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use App\Models\User_type;
+use App\Models\department;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
+use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserComponent extends Component
 {
     use WithPagination;
+    use AuthorizesRequests;
     public $user_id; 
     public $user_name;
     public $password;
     public $search;
+
+    public function mount()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 10);
+    }
 
     public function render()
     {
@@ -67,6 +75,7 @@ class UserComponent extends Component
 
     public function create(UserRequest $request)
     {
+        Gate::authorize('AuthorizeRolePolicy', 24);
          try {
             User::create([
                 'name' => $request->name , 
@@ -148,6 +157,7 @@ class UserComponent extends Component
 
     public function updatePassword()
     {
+        Gate::authorize('AuthorizeRolePolicy', 25);
             try {
                 $validated = $this->validate([
                     'password' => [

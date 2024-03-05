@@ -2,16 +2,24 @@
 
 namespace App\Livewire\Suppliers;
 
-use App\Http\Requests\SupplierRequest;
-use App\Models\department;
-use App\Models\supplier;
 use Livewire\Component;
+use App\Models\supplier;
+use App\Models\department;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\SupplierRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class SupplierComponent extends Component
 {
     use WithPagination;
+    use AuthorizesRequests;
     public $search;
+
+    public function mount()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 8);
+    }
 
     public function render()
     {
@@ -68,6 +76,7 @@ class SupplierComponent extends Component
 
     public function create(SupplierRequest $request)
     {
+        Gate::authorize('AuthorizeRolePolicy', 18);
             try {
                 supplier::create([
                     'name' => $request->name , 
@@ -87,6 +96,7 @@ class SupplierComponent extends Component
 
     public function destroy($id)
     {
+        Gate::authorize('AuthorizeRolePolicy', 20);
             try {
                 $supplier_data = supplier::find($id);
                 if($supplier_data){
@@ -116,6 +126,7 @@ class SupplierComponent extends Component
 
     public function update(SupplierRequest $request)
     {
+        Gate::authorize('AuthorizeRolePolicy', 19);
             try {
                 $supplier_data = supplier::find($request->supplier_id);
 
