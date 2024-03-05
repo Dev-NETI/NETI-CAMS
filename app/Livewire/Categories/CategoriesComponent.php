@@ -2,17 +2,25 @@
 
 namespace App\Livewire\Categories;
 
-use App\Http\Requests\CategoriesRequest;
+use Livewire\Component;
 use App\Models\Category;
 use App\Models\department;
 use Illuminate\Http\Request;
-use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\CategoriesRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CategoriesComponent extends Component
 {
     use WithPagination;
+    use AuthorizesRequests;
     public $search;
+
+    public function mount()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 6);
+    }
 
     public function render()
     {
@@ -62,6 +70,7 @@ class CategoriesComponent extends Component
 
     public function create(CategoriesRequest $request)
     {
+        Gate::authorize('AuthorizeRolePolicy', 15);
         try {
             $data = [
                 'name' => $request->name , 
@@ -79,6 +88,7 @@ class CategoriesComponent extends Component
 
     public function destroy($category_id)
     {
+        Gate::authorize('AuthorizeRolePolicy', 17);
         try {
             $category_data = Category::find($category_id);
 
@@ -110,7 +120,7 @@ class CategoriesComponent extends Component
 
     public function update(CategoriesRequest $request)
     {
-        
+        Gate::authorize('AuthorizeRolePolicy', 16);
         try {
             $category_data = Category::find($request->category_id);
 

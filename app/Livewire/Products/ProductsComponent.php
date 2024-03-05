@@ -10,12 +10,15 @@ use App\Models\product;
 use App\Models\Replenishment;
 use App\Models\supplier;
 use App\Models\unit;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class ProductsComponent extends Component
 {
     use WithPagination;
+    use AuthorizesRequests;
     public $product_name;
     public $product_id;
     public $quantity;
@@ -24,6 +27,11 @@ class ProductsComponent extends Component
     public $max_quantity;
     public $description;
     public $search;
+
+    public function mount()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 1);
+    }
 
     public function render()
     {
@@ -88,6 +96,7 @@ class ProductsComponent extends Component
 
     public function create(ProductsRequest $request)
     {
+        Gate::authorize('AuthorizeRolePolicy', 11);
             try {
                 $currentUser = auth()->user()->name;
                 
@@ -133,6 +142,7 @@ class ProductsComponent extends Component
 
     public function update(ProductsRequest $request)
     {   
+        Gate::authorize('AuthorizeRolePolicy', 12);
         try {
             $product_data = product::find($request->product_id);
 
@@ -175,6 +185,7 @@ class ProductsComponent extends Component
 
     public function Consumption()
     {
+        Gate::authorize('AuthorizeRolePolicy', 13);
             try {
                 $this->validate([
                     'quantity' => 'numeric|required|min:1' ,
@@ -213,6 +224,7 @@ class ProductsComponent extends Component
 
     public function Replenishment()
     {
+        Gate::authorize('AuthorizeRolePolicy', 14);
        try {
             $validated = $this->validate([
                 'quantity' => 'required|min:1' , 

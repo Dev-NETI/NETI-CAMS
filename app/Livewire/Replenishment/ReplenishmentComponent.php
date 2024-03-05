@@ -2,15 +2,22 @@
 
 namespace App\Livewire\Replenishment;
 
-use App\Models\Replenishment;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Replenishment;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ReplenishmentComponent extends Component
 {
     use WithPagination;
-
+    use AuthorizesRequests;
     public $search; 
+
+    public function mount()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 3);
+    }
 
     public function render()
     {

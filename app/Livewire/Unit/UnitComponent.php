@@ -2,17 +2,25 @@
 
 namespace App\Livewire\Unit;
 
-use App\Http\Requests\DeleteUnitRequest;
-use App\Http\Requests\UnitRequest;
-use App\Models\unit;
 use Exception;
-use Illuminate\Support\Facades\Request;
+use App\Models\unit;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Http\Requests\UnitRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Request;
+use App\Http\Requests\DeleteUnitRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UnitComponent extends Component
 {
     use WithPagination;
+    use AuthorizesRequests;
+
+    public function mount()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 9);
+    }
 
     public function render()
     {
@@ -27,7 +35,7 @@ class UnitComponent extends Component
 
     public function store(UnitRequest $request)
     {
-
+        Gate::authorize('AuthorizeRolePolicy', 21);
         try {
             $store = unit::create([
                 'name' => $request->name,
@@ -52,6 +60,7 @@ class UnitComponent extends Component
 
     public function update(UnitRequest $request)
     {
+        Gate::authorize('AuthorizeRolePolicy', 22);
         try {
             $unit_data = unit::find($request->unit_id);
 
@@ -73,6 +82,7 @@ class UnitComponent extends Component
 
     public function destroy(DeleteUnitRequest $request)
     {
+        Gate::authorize('AuthorizeRolePolicy', 23);
         try {
             $unit_data = unit::find($request->unit_id);
 
