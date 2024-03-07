@@ -24,6 +24,7 @@
                                                 <th>Quantity</th>
                                                 <th>Description</th>
                                                 <th>Modified By</th>
+                                                <th>Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -33,6 +34,7 @@
                                                             <td>{{$data->quantity}} {{$data->product->unit->name}}</td>
                                                             <td>{{$data->description}}</td>
                                                             <td>{{$data->DataModifier}}</td>
+                                                            <td>{{$data->date_executed}}</td>
                                                         </tr>
                                                 @endforeach
                                         </tbody>
