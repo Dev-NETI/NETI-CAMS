@@ -64,19 +64,23 @@
                                         @endif
                                     </td>
                                     <td style="width:150px;">
-                                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#ReplenishmentModal"
-                                            wire:click="getItem({{ $data->id }})" title="Replenishment">
-                                            <i class="bi bi-plus-lg"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#ConsumptionModal"
-                                            wire:click="getItem({{ $data->id }})" title="Consumption">
-                                            <i class="bi bi-patch-minus"></i>
-                                        </button>
-                                        <a href="{{ route('products.edit', ['id' => $data->id]) }}"
-                                            class="btn btn-sm btn-info" title="edit"><i
-                                                class="bi bi-gear-fill"></i></a>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Actions
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#ReplenishmentModal"
+                                                        wire:click="getItem({{ $data->id }})">Replenish</button>
+                                                </li>
+                                                <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#ConsumptionModal"
+                                                        wire:click="getItem({{ $data->id }})">Consume</button></li>
+                                                <li><a href="{{ route('products.edit', ['id' => $data->id]) }}"
+                                                        class="dropdown-item">Edit</a></li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
