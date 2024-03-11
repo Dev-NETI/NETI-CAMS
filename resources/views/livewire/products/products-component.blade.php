@@ -16,65 +16,53 @@
                     <x-notification-message />
                 </div>
 
-                <div class="col-md-4 offset-md-8 mt-5">
+                <div class="col-md-4 mt-5">
                     <div class="input-group">
-                        <input type="text" wire:model.live="search" class="form-control"
-                            placeholder="Search name, manufacturer, category, supplier...">
-                        {{-- @if (auth()->user()->usertype_id === 1)
-                            <div class="input-group-prepend">
+                        @if (auth()->user()->usertype_id === 1)
                                 <select class="form-control" wire:model.live="department">
                                     <option value="">Select Department</option>
                                     @foreach ($department_data as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
-                            </div>
                         @endif
                         <div class="input-group-prepend">
-                            <select class="form-control" wire:model="category">
+                            <select class="form-control" wire:model.live="category">
                                 <option value="">Select Category</option>
                                 @foreach ($category_data as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
 
+                <div class="col-md-4 offset-md-4 mt-5">
+                    <input type="text" wire:model.live="search" class="form-control"
+                        placeholder="Search asset...">
+                </div>
+
                 <div class="col-md-12 table-responsive mt-1">
-                    <table class="table table-hover table-striped">
+                    <table class="table table-hover table-striped" id="inv-table">
                         <thead>
                             <tr>
+                                <th>Status</th>
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
-                                <th>Manufacturer</th>
                                 <th @if (auth()->user()->usertype_id == '2') hidden @endif>Department</th>
                                 <th>Category</th>
                                 <th>Supplier</th>
-                                <th>Last Modified By</th>
-                                <th>Status</th>
+                                <th>Modified By</th>
+                                <th>Modified</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($product_data as $data)
                                 <tr>
-                                    <td>{{ $data->name }}</td>
-                                    <td>
-                                        <textarea disabled>{{ $data->description }}</textarea>
-                                    </td>
-                                    <td>{{ $data->price }}</td>
-                                    <td>{{ $data->quantity }} {{ $data->unit->name }}</td>
-                                    <td>{{ $data->price * $data->quantity }}</td>
-                                    <td>{{ $data->manufacturer }}</td>
-                                    <td @if (auth()->user()->usertype_id == 2) hidden @endif>{{ $data->department->name }}
-                                    </td>
-                                    <td>{{ $data->category->name }}</td>
-                                    <td>{{ $data->supplier->name }}</td>
-                                    <td>{{ $data->LastModifiedBy }}</td>
                                     <td>
                                         @if ($data->quantity == 0)
                                             <span class="badge bg-warning">Out of stock</span>
@@ -84,6 +72,19 @@
                                             <span class="badge bg-success">On Stock</span>
                                         @endif
                                     </td>
+                                    <td>{{ $data->name }}</td>
+                                    <td>
+                                        <textarea disabled>{{ $data->description }}</textarea>
+                                    </td>
+                                    <td>{{ $data->price }}</td>
+                                    <td>{{ $data->quantity }} {{ $data->unit->name }}</td>
+                                    <td>{{ $data->price * $data->quantity }}</td>
+                                    <td @if (auth()->user()->usertype_id == 2) hidden @endif>{{ $data->department->name }}
+                                    </td>
+                                    <td>{{ $data->category->name }}</td>
+                                    <td>{{ $data->supplier->name }}</td>
+                                    <td>{{ $data->LastModifiedBy }}</td>
+                                    <td>{{ $data->formatted_date }}</td>
                                     <td style="width:150px;">
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
