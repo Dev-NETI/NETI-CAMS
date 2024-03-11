@@ -17,9 +17,30 @@
                 </div>
 
                 <div class="col-md-4 offset-md-8 mt-5">
-                    <input type="text" wire:model.live="search" class="form-control"
-                        placeholder="Search name, manufacturer, category, supplier...">
+                    <div class="input-group">
+                        <input type="text" wire:model.live="search" class="form-control"
+                            placeholder="Search name, manufacturer, category, supplier...">
+                        @if (auth()->user()->usertype_id === 1)
+                            <div class="input-group-prepend">
+                                <select class="form-control" wire:model="department">
+                                    <option value="">Select Department</option>
+                                    @foreach ($department_data as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+                        <div class="input-group-prepend">
+                            <select class="form-control" wire:model="category">
+                                <option value="">Select Category</option>
+                                @foreach ($category_data as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="col-md-12 table-responsive mt-1">
                     <table class="table table-hover table-striped">
                         <thead>

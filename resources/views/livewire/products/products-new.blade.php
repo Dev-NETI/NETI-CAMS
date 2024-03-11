@@ -27,7 +27,7 @@
                                     <label class="form-label">Price</label>
                                     <input type="text" class="form-control" name="price" value="{{ isset($product_data) ? $product_data->price : '' }}">
                                 </div>
-                                <div class="col-6" {{ isset($product_data) ? 'hidden' : '' }} >
+                                <div class="col-6"  >
                                     <label class="form-label">Quantity</label>
                                     <input type="number" class="form-control" name="quantity" min="1" value="{{ isset($product_data) ? $product_data->quantity : '' }}"  >
                                 </div>
