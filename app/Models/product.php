@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -50,5 +51,11 @@ class product extends Model
     public function replenishment()
     {
         return $this->hasMany(Replenishment::class);
+    }
+
+    // acessor
+    public function getFormattedDateAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('F d,Y');
     }
 }

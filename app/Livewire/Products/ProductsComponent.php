@@ -28,7 +28,9 @@ class ProductsComponent extends Component
     public $description;
     public $search;
     public $department;
+    public $department_id;
     public $category;
+    public $category_id;
 
     public function mount()
     {
@@ -37,155 +39,134 @@ class ProductsComponent extends Component
 
     public function render()
     {
-        if(auth()->user()->usertype_id == 2){
-            $product_data = product::where('department_id' , '=' , auth()->user()->department_id)
-                                    ->where(function ($query) {
-                                        $query->where('name', 'LIKE', '%' . $this->search . '%')
-                                            ->orWhere('manufacturer', 'LIKE', '%' . $this->search . '%')
-                                            ->orWhere('LastModifiedBy', 'LIKE', '%' . $this->search . '%') 
-                                            ->orWhereHas('category' , function($query3){
-                                                $query3->where('name', 'LIKE', '%' . $this->search . '%');
-                                            })
-                                            ->orWhereHas('supplier' , function($query4){
-                                                $query4->where('name', 'LIKE', '%' . $this->search . '%');
-                                            });
-                                    })
-                                    ->orderBy('created_at' , 'asc')
+        if (auth()->user()->usertype_id == 2) {
+            $product_data = product::where('department_id', '=', auth()->user()->department_id)
+                                    ->Where('name', 'LIKE', '%' . $this->search . '%')
+                                    ->Where('category_id', 'LIKE', '%' . $this->category_id . '%')
+                                    ->orderBy('created_at', 'DESC')
                                     ->paginate(10);
-            // $category_data = Category::where('department_id', auth()->user()->department_id)->orderBy('name', 'asc')->get();
-
-        }else{
-            $product_data = product::orderBy('created_at' , 'asc')
-                                    ->where(function ($query) {
-                                        $query->where('name', 'LIKE', '%' . $this->search . '%')
-                                            ->orWhere('manufacturer', 'LIKE', '%' . $this->search . '%')
-                                            ->orWhere('LastModifiedBy', 'LIKE', '%' . $this->search . '%') 
-                                            // ->orWhere('department_id', $this->department)
-                                            ->orWhereHas('department' , function($query2){
-                                                    $query2->where('name', 'LIKE', '%' . $this->search . '%');
-                                            })
-                                            ->orWhereHas('category' , function($query3){
-                                                    $query3->where('name', 'LIKE', '%' . $this->search . '%');
-                                            })
-                                            ->orWhereHas('supplier' , function($query4){
-                                                    $query4->where('name', 'LIKE', '%' . $this->search . '%');
-                                            });
-                                    })
+            $category_data = Category::where('department_id', auth()->user()->department_id)->orderBy('name', 'asc')->get();
+        } else {
+            $product_data = product::where('department_id', 'LIKE', '%' . $this->department_id. '%')
+                                    ->Where('name', 'LIKE', '%' . $this->search . '%')
+                                    ->Where('category_id', 'LIKE', '%' . $this->category_id . '%')
+                                    ->orderBy('created_at', 'Desc')
                                     ->paginate(10);
-            // $category_data = Category::where('department_id', $this->department)->orderBy('name', 'asc')->get();
-
+            $category_data = Category::where('department_id', $this->department_id)->orderBy('name', 'asc')->get();
         }
-        
-        // $department_data = department::all();
-        
-        return view('livewire.products.products-component' , [
-            'product_data' => $product_data
-            // 'department_data' => $department_data,
-            // 'category_data' => $category_data
+
+        $department_data = department::all();
+
+        return view('livewire.products.products-component', [
+            'product_data' => $product_data,
+            'department_data' => $department_data,
+            'category_data' => $category_data
         ])->layout('layouts.app');
-    } 
+    }
 
-    // public function updatedDepartment($value)
-    // {
-    //     $this->render();
-    // }
+    public function updatedDepartment($value)
+    {
+        $this->department_id = $value;
+    }
 
-    // public function updatedCategory($value)
-    // {
-
-    // }
+    public function updatedCategory($value)
+    {
+        $this->category_id = $value;
+    }
 
     public function new()
     {
-        if(auth()->user()->usertype_id == 2){
-            $department_data = department::where('Is_Deleted' , '=' , 0)->where('id' , '=' , auth()->user()->department_id)->get();
-            $category_data = Category::where('Is_Deleted' , '=' , 0)->where('department_id' , '=' , auth()->user()->department_id)->get();
-            $supplier_data = supplier::where('Is_Deleted' , '=' , 0)->where('department_id' , '=' , auth()->user()->department_id)->get();
-        }else{
-            $department_data = department::where('Is_Deleted' , '=' , 0)->get();
-            $category_data = Category::where('Is_Deleted' , '=' , 0)->get();
-            $supplier_data = supplier::where('Is_Deleted' , '=' , 0)->get();
+        if (auth()->user()->usertype_id == 2) {
+            $department_data = department::where('Is_Deleted', '=', 0)->where('id', '=', auth()->user()->department_id)->get();
+            $category_data = Category::where('Is_Deleted', '=', 0)->where('department_id', '=', auth()->user()->department_id)->get();
+            $supplier_data = supplier::where('Is_Deleted', '=', 0)->where('department_id', '=', auth()->user()->department_id)->get();
+        } else {
+            $department_data = department::where('Is_Deleted', '=', 0)->get();
+            $category_data = Category::where('Is_Deleted', '=', 0)->get();
+            $supplier_data = supplier::where('Is_Deleted', '=', 0)->get();
         }
-        
-        $unit_data = unit::where('is_active',1)->orderBy('name','asc')->get();
 
-        return view('livewire.products.products-new' , 
-        compact('department_data' , 'category_data' , 'supplier_data' , 'unit_data')
+        $unit_data = unit::where('is_active', 1)->orderBy('name', 'asc')->get();
+
+        return view(
+            'livewire.products.products-new',
+            compact('department_data', 'category_data', 'supplier_data', 'unit_data')
         );
     }
 
     public function create(ProductsRequest $request)
     {
         Gate::authorize('AuthorizeRolePolicy', 11);
-            try {
-                $currentUser = auth()->user()->name;
-                
-                product::create([
-                    'name' => $request->name , 
-                    'description' => $request->description , 
-                    'price' => $request->price , 
-                    'quantity' => $request->quantity , 
-                    'unit_id' => $request->unit_id , 
-                    'manufacturer' => $request->manufacturer , 
-                    'department_id' => $request->department_id , 
-                    'category_id' => $request->category_id ,
-                    'supplier_id' => $request->supplier_id , 
-                    'low_stock_level' => $request->low_stock_level , 
-                    'LastModifiedBy' => $currentUser
-                ]);
-                session()->flash('alert-success' , 'Product created successfully!');
-            } catch (\Exception $e) {
-                session()->flash('alert-danger' , $e->getMessage());
-            }
-            return redirect()->route('products.index');
+        try {
+            $currentUser = auth()->user()->name;
+
+            product::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price,
+                'quantity' => $request->quantity,
+                'unit_id' => $request->unit_id,
+                'manufacturer' => $request->manufacturer,
+                'department_id' => $request->department_id,
+                'category_id' => $request->category_id,
+                'supplier_id' => $request->supplier_id,
+                'low_stock_level' => $request->low_stock_level,
+                'LastModifiedBy' => $currentUser
+            ]);
+            session()->flash('alert-success', 'Product created successfully!');
+        } catch (\Exception $e) {
+            session()->flash('alert-danger', $e->getMessage());
+        }
+        return redirect()->route('products.index');
     }
 
     public function edit($id)
     {
         $product_data = product::find($id);
-        $unit_data = unit::where('is_active',1)->orderBy('name','asc')->get();
+        $unit_data = unit::where('is_active', 1)->orderBy('name', 'asc')->get();
 
-        if(auth()->user()->usertype_id == 2){
-            $department_data = department::where('Is_Deleted' , '=' , 0)->where('id' , '=' , auth()->user()->department_id)->get();
-            $category_data = Category::where('Is_Deleted' , '=' , 0)->where('department_id' , '=' , auth()->user()->department_id)->get();
-            $supplier_data = supplier::where('Is_Deleted' , '=' , 0)->where('department_id' , '=' , auth()->user()->department_id)->get();
-        }else{
-            $department_data = department::where('Is_Deleted' , '=' , 0)->get();
-            $category_data = Category::where('Is_Deleted' , '=' , 0)->get();
-            $supplier_data = supplier::where('Is_Deleted' , '=' , 0)->get();
+        if (auth()->user()->usertype_id == 2) {
+            $department_data = department::where('Is_Deleted', '=', 0)->where('id', '=', auth()->user()->department_id)->get();
+            $category_data = Category::where('Is_Deleted', '=', 0)->where('department_id', '=', auth()->user()->department_id)->get();
+            $supplier_data = supplier::where('Is_Deleted', '=', 0)->where('department_id', '=', auth()->user()->department_id)->get();
+        } else {
+            $department_data = department::where('Is_Deleted', '=', 0)->get();
+            $category_data = Category::where('Is_Deleted', '=', 0)->get();
+            $supplier_data = supplier::where('Is_Deleted', '=', 0)->get();
         }
 
-        return view('livewire.products.products-new' , 
-        compact('department_data' , 'category_data' , 'supplier_data' , 'unit_data' , 'product_data')
+        return view(
+            'livewire.products.products-new',
+            compact('department_data', 'category_data', 'supplier_data', 'unit_data', 'product_data')
         );
     }
 
     public function update(ProductsRequest $request)
-    {   
+    {
         Gate::authorize('AuthorizeRolePolicy', 12);
         try {
             $product_data = product::find($request->product_id);
 
             if ($product_data) {
                 $product_data->update([
-                        'name' => $request->name , 
-                        'description' => $request->description , 
-                        'price' => $request->price , 
-                        'unit_id' => $request->unit_id , 
-                        'manufacturer' => $request->manufacturer , 
-                        'department_id' => $request->department_id , 
-                        'category_id' => $request->category_id ,
-                        'supplier_id' => $request->supplier_id ,  
-                        'low_stock_level' => $request->low_stock_level ,
-                        'quantity' => $request->quantity,
-                        'LastModifiedBy' => auth()->user()->name 
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'price' => $request->price,
+                    'unit_id' => $request->unit_id,
+                    'manufacturer' => $request->manufacturer,
+                    'department_id' => $request->department_id,
+                    'category_id' => $request->category_id,
+                    'supplier_id' => $request->supplier_id,
+                    'low_stock_level' => $request->low_stock_level,
+                    'quantity' => $request->quantity,
+                    'LastModifiedBy' => auth()->user()->name
                 ]);
-                session()->flash('alert-success' , 'Inventory updated successfully!');
+                session()->flash('alert-success', 'Inventory updated successfully!');
             } else {
-                session()->flash('alert-danger' , 'Item do not exist!');
+                session()->flash('alert-danger', 'Item do not exist!');
             }
         } catch (\Exception $e) {
-                session()->flash('alert-danger' , $e->getMessage());
+            session()->flash('alert-danger', $e->getMessage());
         }
         return redirect()->route('products.index');
     }
@@ -193,92 +174,84 @@ class ProductsComponent extends Component
     public function getItem($id)
     {
         $product_data = product::find($id);
-        if($product_data){
-                $this->product_name = $product_data->name; 
-                $this->product_id = $product_data->id;
-                $this->unit = $product_data->unit->name;
-                $this->max_quantity = $product_data->quantity;
-        }
-        else{
-                session()->flash('alert-danger' , 'Item do not exist!');
+        if ($product_data) {
+            $this->product_name = $product_data->name;
+            $this->product_id = $product_data->id;
+            $this->unit = $product_data->unit->name;
+            $this->max_quantity = $product_data->quantity;
+        } else {
+            session()->flash('alert-danger', 'Item do not exist!');
         }
     }
 
     public function Consumption()
     {
         Gate::authorize('AuthorizeRolePolicy', 13);
-            try {
-                $this->validate([
-                    'quantity' => 'numeric|required|min:1' ,
-                    'purpose' => 'required|min:5|max:4000' 
+        try {
+            $this->validate([
+                'quantity' => 'numeric|required|min:1',
+                'purpose' => 'required|min:5|max:4000'
+            ]);
+
+
+            $product_data = product::find($this->product_id);
+            if ($product_data) {
+
+                //update new item quantity
+                $product_data->update([
+                    'quantity' => $product_data->quantity - $this->quantity
                 ]);
-                
-                
-                $product_data = product::find($this->product_id);
-                if($product_data){
 
-                    //update new item quantity
-                    $product_data->update([
-                        'quantity' => $product_data->quantity - $this->quantity
-                    ]);
+                // record consumption log
+                Consumption::create([
+                    'product_id' => $this->product_id,
+                    'quantity' => $this->quantity,
+                    'purpose' => $this->purpose,
+                    'DataModifier' => auth()->user()->name
+                ]);
 
-                    // record consumption log
-                    Consumption::create([
-                        'product_id' => $this->product_id, 
-                        'quantity' => $this->quantity, 
-                        'purpose' => $this->purpose, 
-                        'DataModifier' => auth()->user()->name
-                    ]);
-        
-                    session()->flash('alert-success' , 'Consumption transaction complete!');
-
-                }else{
-                    session()->flash('alert-danger' , 'Item do not exist!');
-                }
-
-                
-            } catch (\Exception $e) {
-                session()->flash('alert-danger' , $e->getMessage());
+                session()->flash('alert-success', 'Consumption transaction complete!');
+            } else {
+                session()->flash('alert-danger', 'Item do not exist!');
             }
-            return redirect()->route('products.index');
+        } catch (\Exception $e) {
+            session()->flash('alert-danger', $e->getMessage());
+        }
+        return redirect()->route('products.index');
     }
 
     public function Replenishment()
     {
         Gate::authorize('AuthorizeRolePolicy', 14);
-       try {
+        try {
             $validated = $this->validate([
-                'quantity' => 'required|min:1' , 
+                'quantity' => 'required|min:1',
                 'description' => 'required|min:5|max:2000'
             ]);
 
             $product_data = product::find($this->product_id);
 
-            if($product_data){
+            if ($product_data) {
 
                 $product_data->update([
-                    'quantity' => $product_data->quantity + $this->quantity , 
+                    'quantity' => $product_data->quantity + $this->quantity,
                     'LastModifiedBy' => auth()->user()->name
                 ]);
 
                 Replenishment::create([
-                    'product_id' => $this->product_id, 
-                    'quantity' => $this->quantity, 
-                    'description' => $this->description, 
+                    'product_id' => $this->product_id,
+                    'quantity' => $this->quantity,
+                    'description' => $this->description,
                     'DataModifier' => auth()->user()->name
                 ]);
-    
-                session()->flash('alert-success' , 'Replenishment successful!');
 
-            }else{
-                session()->flash('alert-danger' , 'Item do not exist!');
+                session()->flash('alert-success', 'Replenishment successful!');
+            } else {
+                session()->flash('alert-danger', 'Item do not exist!');
             }
-
-            
-       } catch (\Exception $e) {
-            session()->flash('alert-danger' , $e->getMessage());
-       }
-       return redirect()->route('products.index');
+        } catch (\Exception $e) {
+            session()->flash('alert-danger', $e->getMessage());
+        }
+        return redirect()->route('products.index');
     }
-    
 }
