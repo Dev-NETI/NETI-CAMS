@@ -44,8 +44,7 @@ class ProductsComponent extends Component
                                             ->orWhere('manufacturer', 'LIKE', '%' . $this->search . '%')
                                             ->orWhere('LastModifiedBy', 'LIKE', '%' . $this->search . '%') 
                                             ->orWhereHas('category' , function($query3){
-                                                $query3->where('name', 'LIKE', '%' . $this->search . '%')
-                                                       ->where('id', 'LIKE', '%' . $this->category . '%');
+                                                $query3->where('name', 'LIKE', '%' . $this->search . '%');
                                             })
                                             ->orWhereHas('supplier' , function($query4){
                                                 $query4->where('name', 'LIKE', '%' . $this->search . '%');
@@ -53,50 +52,48 @@ class ProductsComponent extends Component
                                     })
                                     ->orderBy('created_at' , 'asc')
                                     ->paginate(10);
-            $category_data = Category::where('department_id', auth()->user()->department_id)
-                                     ->orderBy('name', 'asc')
-                                     ->get();
+            // $category_data = Category::where('department_id', auth()->user()->department_id)->orderBy('name', 'asc')->get();
+
         }else{
             $product_data = product::orderBy('created_at' , 'asc')
                                     ->where(function ($query) {
                                         $query->where('name', 'LIKE', '%' . $this->search . '%')
                                             ->orWhere('manufacturer', 'LIKE', '%' . $this->search . '%')
                                             ->orWhere('LastModifiedBy', 'LIKE', '%' . $this->search . '%') 
+                                            // ->orWhere('department_id', $this->department)
                                             ->orWhereHas('department' , function($query2){
-                                                    $query2->where('name', 'LIKE', '%' . $this->search . '%')
-                                                            ->where('id', 'LIKE', '%' . $this->department . '%');
+                                                    $query2->where('name', 'LIKE', '%' . $this->search . '%');
                                             })
                                             ->orWhereHas('category' , function($query3){
-                                                    $query3->where('name', 'LIKE', '%' . $this->search . '%')
-                                                            ->where('id', 'LIKE', '%' . $this->category . '%');
+                                                    $query3->where('name', 'LIKE', '%' . $this->search . '%');
                                             })
                                             ->orWhereHas('supplier' , function($query4){
                                                     $query4->where('name', 'LIKE', '%' . $this->search . '%');
                                             });
                                     })
                                     ->paginate(10);
-            $category_data = Category::where('department_id', $this->department)->orderBy('name', 'asc')->get();
+            // $category_data = Category::where('department_id', $this->department)->orderBy('name', 'asc')->get();
+
         }
         
-        $department_data = department::all();
+        // $department_data = department::all();
         
-
         return view('livewire.products.products-component' , [
-            'product_data' => $product_data,
-            'department_data' => $department_data,
-            'category_data' => $category_data
+            'product_data' => $product_data
+            // 'department_data' => $department_data,
+            // 'category_data' => $category_data
         ])->layout('layouts.app');
     } 
 
-    public function updatedDepartment($value)
-    {
-        dd($value);
-    }
+    // public function updatedDepartment($value)
+    // {
+    //     $this->render();
+    // }
 
-    public function updatedCategory($value)
-    {
+    // public function updatedCategory($value)
+    // {
 
-    }
+    // }
 
     public function new()
     {

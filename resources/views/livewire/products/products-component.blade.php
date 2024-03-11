@@ -20,9 +20,9 @@
                     <div class="input-group">
                         <input type="text" wire:model.live="search" class="form-control"
                             placeholder="Search name, manufacturer, category, supplier...">
-                        @if (auth()->user()->usertype_id === 1)
+                        {{-- @if (auth()->user()->usertype_id === 1)
                             <div class="input-group-prepend">
-                                <select class="form-control" wire:model="department">
+                                <select class="form-control" wire:model.live="department">
                                     <option value="">Select Department</option>
                                     @foreach ($department_data as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -37,7 +37,7 @@
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
