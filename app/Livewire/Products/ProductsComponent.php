@@ -27,6 +27,8 @@ class ProductsComponent extends Component
     public $max_quantity;
     public $description;
     public $search;
+    public $department;
+    public $category;
 
     public function mount()
     {
@@ -42,7 +44,8 @@ class ProductsComponent extends Component
                                             ->orWhere('manufacturer', 'LIKE', '%' . $this->search . '%')
                                             ->orWhere('LastModifiedBy', 'LIKE', '%' . $this->search . '%') 
                                             ->orWhereHas('category' , function($query3){
-                                                $query3->where('name', 'LIKE', '%' . $this->search . '%');
+                                                $query3->where('name', 'LIKE', '%' . $this->search . '%')
+                                                       ->where('id', 'LIKE', '%' . $this->category . '%');
                                             })
                                             ->orWhereHas('supplier' , function($query4){
                                                 $query4->where('name', 'LIKE', '%' . $this->search . '%');
@@ -50,6 +53,9 @@ class ProductsComponent extends Component
                                     })
                                     ->orderBy('created_at' , 'asc')
                                     ->paginate(10);
+            $category_data = Category::where('department_id', auth()->user()->department_id)
+                                     ->orderBy('name', 'asc')
+                                     ->get();
         }else{
             $product_data = product::orderBy('created_at' , 'asc')
                                     ->where(function ($query) {
@@ -57,23 +63,40 @@ class ProductsComponent extends Component
                                             ->orWhere('manufacturer', 'LIKE', '%' . $this->search . '%')
                                             ->orWhere('LastModifiedBy', 'LIKE', '%' . $this->search . '%') 
                                             ->orWhereHas('department' , function($query2){
-                                                    $query2->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    $query2->where('name', 'LIKE', '%' . $this->search . '%')
+                                                            ->where('id', 'LIKE', '%' . $this->department . '%');
                                             })
                                             ->orWhereHas('category' , function($query3){
-                                                    $query3->where('name', 'LIKE', '%' . $this->search . '%');
+                                                    $query3->where('name', 'LIKE', '%' . $this->search . '%')
+                                                            ->where('id', 'LIKE', '%' . $this->category . '%');
                                             })
                                             ->orWhereHas('supplier' , function($query4){
                                                     $query4->where('name', 'LIKE', '%' . $this->search . '%');
                                             });
                                     })
                                     ->paginate(10);
+            $category_data = Category::where('department_id', $this->department)->orderBy('name', 'asc')->get();
         }
+        
+        $department_data = department::all();
         
 
         return view('livewire.products.products-component' , [
-            'product_data' => $product_data
+            'product_data' => $product_data,
+            'department_data' => $department_data,
+            'category_data' => $category_data
         ])->layout('layouts.app');
     } 
+
+    public function updatedDepartment($value)
+    {
+        dd($value);
+    }
+
+    public function updatedCategory($value)
+    {
+
+    }
 
     public function new()
     {
@@ -157,6 +180,7 @@ class ProductsComponent extends Component
                         'category_id' => $request->category_id ,
                         'supplier_id' => $request->supplier_id ,  
                         'low_stock_level' => $request->low_stock_level ,
+                        'quantity' => $request->quantity,
                         'LastModifiedBy' => auth()->user()->name 
                 ]);
                 session()->flash('alert-success' , 'Inventory updated successfully!');
