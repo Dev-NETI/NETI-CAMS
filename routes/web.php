@@ -2,6 +2,7 @@
 
 use App\Livewire\Categories\CategoriesComponent;
 use App\Livewire\Consumption\ConsumptionComponent;
+use App\Livewire\Dashboard\DashboardViewComponent;
 use App\Livewire\Department\DepartmentComponent;
 use App\Livewire\Products\ProductsComponent;
 use App\Livewire\Replenishment\ReplenishmentComponent;
@@ -33,6 +34,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
     
+    // Route::prefix('dashboard')->as('dashboard.')->controller(DashboardViewComponent::class)->group(function(){
+    //     Route::get('index', DashboardViewComponent::class)->name('index');
+    // });
+
     Route::prefix('categories')->as('categories.')->controller(CategoriesComponent::class)->group(function(){
 
         Route::get('index' , CategoriesComponent::class)->name('index');

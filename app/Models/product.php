@@ -10,17 +10,19 @@ class product extends Model
 {
     use HasFactory;
     protected $fillable = [
-                    'name'  , 
-                    'description'  , 
-                    'price'  , 
-                    'quantity'  , 
-                    'unit_id'  , 
-                    'manufacturer'  , 
-                    'department_id'  , 
-                    'category_id'  ,
-                    'supplier_id' , 
-                    'LastModifiedBy' , 
-                    'low_stock_level'
+        'name',
+        'description',
+        'price',
+        'quantity',
+        'unit_id',
+        'manufacturer',
+        'department_id',
+        'category_id',
+        'supplier_id',
+        'LastModifiedBy',
+        'low_stock_level',
+        'is_active',
+        'expiration'
     ];
 
     public function unit()
@@ -57,5 +59,28 @@ class product extends Model
     public function getFormattedDateAttribute()
     {
         return Carbon::parse($this->created_at)->format('F d,Y');
+    }
+
+    public function getExpirationStatusAttribute()
+    {
+        if ($this->expiration === null) {
+            $status = "No expiration";
+            $class = "bg-info";
+        } else {
+            $expirationDate = Carbon::parse($this->expiration);
+            $currentDate = Carbon::now();
+            $differenceInDays = $expirationDate->diffInDays($currentDate);
+
+            if ($differenceInDays <= 30) { // Within one month
+                $status = $expirationDate->diffForHumans();
+                $class = 'bg-danger';
+            } else {
+                $status = $expirationDate->diffForHumans();
+                $class = 'bg-primary';
+            }
+        }
+
+        $status = '<span class="badge ' . $class . '">' . $status . '</span>';
+        return $status;
     }
 }

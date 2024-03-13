@@ -31,7 +31,8 @@ class ProductsRequest extends FormRequest
             'department_id' => 'required',
             'category_id' => 'required',
             'supplier_id' => 'required', 
-            'low_stock_level' => 'required|min:1|numeric'
+            'low_stock_level' => 'required|min:1|numeric',
+            'expiration' => 'nullable|date|after_or_equal:today'
         ];
     }
 }

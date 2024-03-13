@@ -82,13 +82,17 @@
                                             @endforeach
                                     </select>
                                 </div>
-                                <div class="col-6">
-                                    <label class="form-label">Description</label>
-                                    <textarea name="description" class="form-control" cols="30" rows="5">{{ isset($product_data) ? $product_data->description : '' }}</textarea>
+                                <div class="col-6" >
+                                    <label class="form-label">Expiration <small class="text-danger">(Optional!)</small></label>
+                                    <input type="date" class="form-control" name="expiration" value="{{ isset($product_data) ? $product_data->expiration : '' }}"  >
                                 </div>
                                 <div class="col-6" >
                                     <label class="form-label">Low Stock Threshold</label>
                                     <input type="number" class="form-control" name="low_stock_level" min="1" value="{{ isset($product_data) ? $product_data->low_stock_level : '10' }}"  >
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Description</label>
+                                    <textarea name="description" class="form-control" cols="30" rows="5">{{ isset($product_data) ? $product_data->description : '' }}</textarea>
                                 </div>
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary">Save</button>

@@ -45,6 +45,7 @@ class RoleSeeder extends Seeder
             24 => ["Create User (User Management)"],
             25 => ["Change Password (User Management)"],
             26 => ["Assign Roles (User Management)"],
+            27 => ["Delete Inventory (Inventory Module)"],
         ];
 
         foreach($data as $index=>[$name]){

@@ -2,6 +2,13 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
+        {{-- <li class="nav-item">
+            <a class="nav-link " href="{{ route('dashboard.index') }}">
+                <i class="bi bi-speedometer"></i>
+                <span>Dashboard</span>
+            </a>
+        </li> --}}
+
         @can('AuthorizeRolePolicy', 1)
             <li class="nav-item">
                 <a class="nav-link " href="{{ route('products.index') }}">
