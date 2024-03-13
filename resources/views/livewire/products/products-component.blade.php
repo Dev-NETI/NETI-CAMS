@@ -19,12 +19,12 @@
                 <div class="col-md-4 mt-5">
                     <div class="input-group">
                         @if (auth()->user()->usertype_id === 1)
-                                <select class="form-control" wire:model.live="department">
-                                    <option value="">Select Department</option>
-                                    @foreach ($department_data as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
+                            <select class="form-control" wire:model.live="department">
+                                <option value="">Select Department</option>
+                                @foreach ($department_data as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         @endif
                         <div class="input-group-prepend">
                             <select class="form-control" wire:model.live="category">
@@ -38,14 +38,14 @@
                 </div>
 
                 <div class="col-md-4 offset-md-4 mt-5">
-                    <input type="text" wire:model.live="search" class="form-control"
-                        placeholder="Search asset...">
+                    <input type="text" wire:model.live="search" class="form-control" placeholder="Search asset...">
                 </div>
 
                 <div class="col-md-12 table-responsive mt-1">
                     <table class="table table-hover table-striped" id="inv-table">
                         <thead>
                             <tr>
+                                <th>Expiration</th>
                                 <th>Status</th>
                                 <th>Name</th>
                                 <th>Description</th>
@@ -63,6 +63,9 @@
                         <tbody>
                             @foreach ($product_data as $data)
                                 <tr>
+                                    <td>
+                                        {!!$data->expiration_status!!}
+                                    </td>
                                     <td>
                                         @if ($data->quantity == 0)
                                             <span class="badge bg-warning">Out of stock</span>
@@ -101,6 +104,8 @@
                                                         wire:click="getItem({{ $data->id }})">Consume</button></li>
                                                 <li><a href="{{ route('products.edit', ['id' => $data->id]) }}"
                                                         class="dropdown-item">Edit</a></li>
+                                                <li><button class="dropdown-item" type="button" wire:confirm="Are you sure you want to delete this item?"
+                                                        wire:click="destroy({{$data->id}})">Delete</button>
                                             </ul>
                                         </div>
                                     </td>

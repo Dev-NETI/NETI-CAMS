@@ -43,14 +43,16 @@ class ProductsComponent extends Component
             $product_data = product::where('department_id', '=', auth()->user()->department_id)
                                     ->Where('name', 'LIKE', '%' . $this->search . '%')
                                     ->Where('category_id', 'LIKE', '%' . $this->category_id . '%')
-                                    ->orderBy('created_at', 'DESC')
+                                    ->Where('is_active', true)
+                                    ->orderBy('name', 'asc')
                                     ->paginate(10);
             $category_data = Category::where('department_id', auth()->user()->department_id)->orderBy('name', 'asc')->get();
         } else {
             $product_data = product::where('department_id', 'LIKE', '%' . $this->department_id. '%')
                                     ->Where('name', 'LIKE', '%' . $this->search . '%')
                                     ->Where('category_id', 'LIKE', '%' . $this->category_id . '%')
-                                    ->orderBy('created_at', 'Desc')
+                                    ->Where('is_active', true)
+                                    ->orderBy('name', 'asc')
                                     ->paginate(10);
             $category_data = Category::where('department_id', $this->department_id)->orderBy('name', 'asc')->get();
         }
@@ -111,7 +113,8 @@ class ProductsComponent extends Component
                 'category_id' => $request->category_id,
                 'supplier_id' => $request->supplier_id,
                 'low_stock_level' => $request->low_stock_level,
-                'LastModifiedBy' => $currentUser
+                'LastModifiedBy' => $currentUser,
+                'expiration' => $request->expiration
             ]);
             session()->flash('alert-success', 'Product created successfully!');
         } catch (\Exception $e) {
@@ -159,7 +162,8 @@ class ProductsComponent extends Component
                     'supplier_id' => $request->supplier_id,
                     'low_stock_level' => $request->low_stock_level,
                     'quantity' => $request->quantity,
-                    'LastModifiedBy' => auth()->user()->name
+                    'LastModifiedBy' => auth()->user()->name,
+                    'expiration' => $request->expiration
                 ]);
                 session()->flash('alert-success', 'Inventory updated successfully!');
             } else {
@@ -254,4 +258,22 @@ class ProductsComponent extends Component
         }
         return redirect()->route('products.index');
     }
+
+    public function destroy($id)
+    {
+        Gate::authorize('AuthorizeRolePolicy', 27);
+        $product = product::find($id);
+        try {
+            $update = $product->update([
+                'is_active' => false
+            ]);
+            if(!$update){
+                session()->flash('alert-danger', 'Failed to delete product!');
+            }
+            session()->flash('alert-success', 'Product deleted successfully!');
+        } catch (\Exception $e) {
+            session()->flash('alert-danger', $e->getMessage());
+        }
+    }
+
 }
