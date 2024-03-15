@@ -13,15 +13,30 @@
             <div class="col-md-12">
 
                 @if (count($expired_data) > 0)
-                    <ul class="list-group mt-2">
-                        @foreach ($expired_data as $item)
-                            <li class="list-group-item">
-                                {{ $item->name }}
-                                <span class="badge rounded-pill bg-info text-dark float-end">Expiration Date:
-                                    {{ $item->formatted_expiration_date }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
+
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Expiration Date</th>
+                                @if (auth()->user()->usertype_id === 1)
+                                    <th>Department</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($expired_data as $item)
+                                <tr>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->formatted_expiration_date }}</td>
+                                    @if (auth()->user()->usertype_id === 1)
+                                        <td>{{ $item->department->name }}</td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
                     <div>
                         {{ $expired_data->links('livewire::simple-bootstrap') }}
                     </div>

@@ -18,17 +18,35 @@ class ExpirationTrackingListComponent extends Component
     {
         switch ($this->expiredId) {
             case 1:
-                $expired_data = product::where('expiration', '<', Carbon::now())->paginate(6);
+                $query = product::where('expiration', '<', Carbon::now());
+
+                if (auth()->user()->usertype_id != 1) {
+                    $query->where('department_id', '=', auth()->user()->department_id);
+                }
+
+                $expired_data = $query->orderBy('name','asc')->paginate(6);
                 break;
             case 2:
-                $expired_data = product::where('expiration', '>=', Carbon::now())
-                    ->where('expiration', '<=', Carbon::now()->addWeek())
-                    ->paginate(6);
+                $query = product::where('expiration', '>=', Carbon::now())
+                    ->where('expiration', '<=', Carbon::now()->addWeek());
+
+                if (auth()->user()->usertype_id != 1) {
+                    $query->where('department_id', '=', auth()->user()->department_id);
+                }
+
+
+                $expired_data = $query->orderBy('name','asc')->paginate(6);
                 break;
             case 3:
-                $expired_data = product::where('expiration', '>=', Carbon::now())
-                    ->where('expiration', '<=', Carbon::now()->addMonth())
-                    ->paginate(6);
+                $query = product::where('expiration', '>=', Carbon::now())
+                    ->where('expiration', '<=', Carbon::now()->addMonth());
+
+                if (auth()->user()->usertype_id != 1) {
+                    $query->where('department_id', '=', auth()->user()->department_id);
+                }
+
+
+                $expired_data = $query->orderBy('name','asc')->paginate(6);
                 break;
             default:
                 $expired_data = null;
