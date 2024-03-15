@@ -61,6 +61,17 @@ class product extends Model
         return Carbon::parse($this->created_at)->format('F d,Y');
     }
 
+    public function getFormattedUpdatedDateAttribute()
+    {
+        return Carbon::parse($this->updated_at)->format('F d,Y');
+    }
+
+    public function getFormattedExpirationDateAttribute()
+    {
+        $expiration = $this->expiration === NULL ? 'No expiration' : Carbon::parse($this->expiration)->format('F d,Y') ;
+        return $expiration;
+    }
+
     public function getExpirationStatusAttribute()
     {
         if ($this->expiration === null) {
