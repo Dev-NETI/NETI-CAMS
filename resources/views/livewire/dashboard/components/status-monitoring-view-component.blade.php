@@ -9,18 +9,20 @@
         </div>
 
         <div class="card-body row">
-            
-            <div class="col-md-12 mt-2 row">
-                <div class="col-md-4">
 
-                    <select wire:model.live="departmentId" class="form-control  mt-2">
-                        <option value="">Select Department</option>
-                        @foreach ($department_data as $item)
-                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        @endforeach
-                    </select>
+            @if (auth()->user()->usertype_id === 1)
+                <div class="col-md-12 mt-2 row">
+                    <div class="col-md-4">
+
+                        <select wire:model.live="departmentId" class="form-control  mt-2">
+                            <option value="">Select Department</option>
+                            @foreach ($department_data as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-            </div>
+            @endif
 
             <livewire:dashboard.components.status-monitoring-list-component departmentId="{{ $departmentId }}"
                 titleColor="text-warning" title="Out of Stock" statusId="1" />
