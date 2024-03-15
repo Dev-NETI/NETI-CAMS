@@ -38,7 +38,15 @@
                 </div>
 
                 <div class="col-md-4 offset-md-4 mt-5">
-                    <input type="text" wire:model.live="search" class="form-control" placeholder="Search asset...">
+                    <div class="input-group">
+                        <input type="text" wire:model.live="search" class="form-control" placeholder="Search asset...">
+                        <div class="input-group-append">
+                            <button data-bs-toggle="modal"
+                            data-bs-target="#ExportModal" class="btn btn-danger" title="Export">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-md-12 table-responsive mt-1">
@@ -188,6 +196,10 @@
             </div>
         </div>
         {{-- replenishment modal end --}}
+
+        {{-- export modal --}}
+        <livewire:products.component.generate-inventory-report-component :category="$category_data" />
+        {{-- export modal end--}}
 
     </section>
 </section>

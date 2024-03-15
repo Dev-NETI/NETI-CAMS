@@ -6,6 +6,7 @@ use App\Livewire\Dashboard\DashboardViewComponent;
 use App\Livewire\Department\DepartmentComponent;
 use App\Livewire\Products\ProductsComponent;
 use App\Livewire\Replenishment\ReplenishmentComponent;
+use App\Livewire\Reports\GenerateInventoryReportComponent;
 use App\Livewire\Roles\RolesComponent;
 use App\Livewire\Suppliers\SupplierComponent;
 use App\Livewire\Unit\UnitComponent;
@@ -36,6 +37,10 @@ Route::middleware([
     
     Route::prefix('dashboard')->as('dashboard.')->controller(DashboardViewComponent::class)->group(function(){
         Route::get('index', DashboardViewComponent::class)->name('index');
+    });
+
+    Route::prefix('report')->as('report.')->controller(GenerateInventoryReportComponent::class)->group(function(){
+        Route::get('inventory', 'inventory')->name('inventory');
     });
 
     Route::prefix('categories')->as('categories.')->controller(CategoriesComponent::class)->group(function(){
