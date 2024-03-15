@@ -13,24 +13,40 @@
             <div class="col-md-12">
 
                 @if (count($status_data) > 0)
-                    <ul class="list-group mt-2">
-                        @foreach ($status_data as $item)
-                            <li class="list-group-item">
-                                {{ $item->name }}
-                                @if ($statusId != 1)
-                                    <span class="badge rounded-pill bg-info text-dark float-end">Current Quantity:
-                                        {{ $item->quantity }} {{ $item->unit->name }}</span>
+
+                    <table class="table table-hover table-striped text-sm">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                @if (auth()->user()->usertype_id === 1)
+                                    <th>Department</th>
                                 @endif
-                            </li>
-                        @endforeach
-                    </ul>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($status_data as $item)
+                                <tr>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->quantity }} {{ $item->unit->name }}</td>
+                                    @if (auth()->user()->usertype_id === 1)
+                                        <td>{{ $item->department->name }}</td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
                     <div>
                         {{ $status_data->links('livewire::simple-bootstrap') }}
                     </div>
+
                 @else
+                
                     <h4 class="text-danger text-center mt-2">
                         No available data
                     </h4>
+                    
                 @endif
 
             </div>
