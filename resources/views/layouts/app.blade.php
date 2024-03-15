@@ -59,7 +59,7 @@
     </main><!-- End #main -->
 
     <!-- ======= Footer ======= -->
-    @include('components.footer')
+    {{-- @include('components.footer') --}}
     <!-- End Footer -->
 
     {{-- <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i

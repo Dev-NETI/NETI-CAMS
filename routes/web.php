@@ -34,9 +34,9 @@ Route::middleware([
     'verified',
 ])->group(function () {
     
-    // Route::prefix('dashboard')->as('dashboard.')->controller(DashboardViewComponent::class)->group(function(){
-    //     Route::get('index', DashboardViewComponent::class)->name('index');
-    // });
+    Route::prefix('dashboard')->as('dashboard.')->controller(DashboardViewComponent::class)->group(function(){
+        Route::get('index', DashboardViewComponent::class)->name('index');
+    });
 
     Route::prefix('categories')->as('categories.')->controller(CategoriesComponent::class)->group(function(){
 

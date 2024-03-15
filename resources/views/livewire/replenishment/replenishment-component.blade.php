@@ -1,6 +1,6 @@
 <section>
     <div class="pagetitle">
-        <h1>Replenishment</h1>
+        <h1>Replenishment Logs</h1>
     </div>
     
     <section class="section">
@@ -9,6 +9,10 @@
                 <div class="card-body row">
                     <div class="col-md-12">
                         <h5 class="card-title">Replenishment history</h5>
+                        <div class="alert alert-info bg-info border-0 alert-dismissible fade show" role="alert">
+                            This module functions as a record of the replenishment history of assets.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                     </div>
                     
                     <div class="col-md-4 offset-md-8">
@@ -21,9 +25,10 @@
                                         <thead>
                                             <tr>
                                                 <th>Item</th>
+                                                <th>Category</th>
                                                 <th>Quantity</th>
                                                 <th>Description</th>
-                                                <th>Modified By</th>
+                                                <th>Replenished By</th>
                                                 <th>Date</th>
                                             </tr>
                                         </thead>
@@ -31,6 +36,7 @@
                                                 @foreach ($replenishment_data as $data)
                                                         <tr>
                                                             <td>{{$data->product->name}}</td>
+                                                            <td>{{$data->product->category->name}}</td>
                                                             <td>{{$data->quantity}} {{$data->product->unit->name}}</td>
                                                             <td>{{$data->description}}</td>
                                                             <td>{{$data->DataModifier}}</td>

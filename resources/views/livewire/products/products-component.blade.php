@@ -45,7 +45,6 @@
                     <table class="table table-hover table-striped" id="inv-table">
                         <thead>
                             <tr>
-                                <th>Expiration</th>
                                 <th>Status</th>
                                 <th>Name</th>
                                 <th>Description</th>
@@ -56,7 +55,7 @@
                                 <th>Category</th>
                                 <th>Supplier</th>
                                 <th>Modified By</th>
-                                <th>Modified</th>
+                                <th>Last Modified</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -64,9 +63,7 @@
                             @foreach ($product_data as $data)
                                 <tr>
                                     <td>
-                                        {!!$data->expiration_status!!}
-                                    </td>
-                                    <td>
+                                        {!! $data->expiration_status !!}
                                         @if ($data->quantity == 0)
                                             <span class="badge bg-warning">Out of stock</span>
                                         @elseif ($data->quantity <= $data->low_stock_level)
@@ -87,7 +84,7 @@
                                     <td>{{ $data->category->name }}</td>
                                     <td>{{ $data->supplier->name }}</td>
                                     <td>{{ $data->LastModifiedBy }}</td>
-                                    <td>{{ $data->formatted_date }}</td>
+                                    <td>{{ $data->formatted_updated_date }}</td>
                                     <td style="width:150px;">
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
@@ -104,8 +101,9 @@
                                                         wire:click="getItem({{ $data->id }})">Consume</button></li>
                                                 <li><a href="{{ route('products.edit', ['id' => $data->id]) }}"
                                                         class="dropdown-item">Edit</a></li>
-                                                <li><button class="dropdown-item" type="button" wire:confirm="Are you sure you want to delete this item?"
-                                                        wire:click="destroy({{$data->id}})">Delete</button>
+                                                <li><button class="dropdown-item" type="button"
+                                                        wire:confirm="Are you sure you want to delete this item?"
+                                                        wire:click="destroy({{ $data->id }})">Delete</button>
                                             </ul>
                                         </div>
                                     </td>
