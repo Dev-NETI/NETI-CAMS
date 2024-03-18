@@ -48,6 +48,7 @@ class RoleSeeder extends Seeder
             27 => ["Delete Inventory (Inventory Module)"],
             28 => ["Dashboard"],
             29 => ["Export Inventory"],
+            30 => ["Inventory Price"],
         ];
 
         foreach($data as $index=>[$name]){

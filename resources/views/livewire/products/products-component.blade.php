@@ -57,9 +57,9 @@
                                 <th>Status</th>
                                 <th>Name</th>
                                 <th>Description</th>
-                                <th>Price</th>
+                                @can('AuthorizeRolePolicy', 30) <th>Price</th> @endcan
                                 <th>Quantity</th>
-                                <th>Total</th>
+                                @can('AuthorizeRolePolicy', 30) <th>Total</th> @endcan
                                 <th @if (auth()->user()->usertype_id == '2') hidden @endif>Department</th>
                                 <th>Category</th>
                                 <th>Supplier</th>
