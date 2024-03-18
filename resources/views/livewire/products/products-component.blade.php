@@ -39,10 +39,11 @@
 
                 <div class="col-md-4 offset-md-4 mt-5">
                     <div class="input-group">
-                        <input type="text" wire:model.live="search" class="form-control" placeholder="Search asset...">
+                        <input type="text" wire:model.live="search" class="form-control"
+                            placeholder="Search asset...">
                         <div class="input-group-append">
-                            <button data-bs-toggle="modal"
-                            data-bs-target="#ExportModal" class="btn btn-danger" title="Export">
+                            <button data-bs-toggle="modal" data-bs-target="#ExportModal" class="btn btn-danger"
+                                title="Export">
                                 <i class="bi bi-download"></i>
                             </button>
                         </div>
@@ -62,6 +63,7 @@
                                 <th @if (auth()->user()->usertype_id == '2') hidden @endif>Department</th>
                                 <th>Category</th>
                                 <th>Supplier</th>
+                                <th>Remarks</th>
                                 <th>Modified By</th>
                                 <th>Last Modified</th>
                                 <th>Action</th>
@@ -82,7 +84,7 @@
                                     </td>
                                     <td>{{ $data->name }}</td>
                                     <td>
-                                        <textarea disabled>{{ $data->description }}</textarea>
+                                        {{ $data->formatted_description }}
                                     </td>
                                     <td>{{ $data->price }}</td>
                                     <td>{{ $data->quantity }} {{ $data->unit->name }}</td>
@@ -91,6 +93,7 @@
                                     </td>
                                     <td>{{ $data->category->name }}</td>
                                     <td>{{ $data->supplier->name }}</td>
+                                    <td>{{ $data->formatted_remarks }}</td>
                                     <td>{{ $data->LastModifiedBy }}</td>
                                     <td>{{ $data->formatted_updated_date }}</td>
                                     <td style="width:150px;">
@@ -199,7 +202,7 @@
 
         {{-- export modal --}}
         <livewire:products.component.generate-inventory-report-component :category="$category_data" />
-        {{-- export modal end--}}
+        {{-- export modal end --}}
 
     </section>
 </section>

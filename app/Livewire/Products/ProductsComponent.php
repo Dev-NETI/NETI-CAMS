@@ -114,7 +114,8 @@ class ProductsComponent extends Component
                 'supplier_id' => $request->supplier_id,
                 'low_stock_level' => $request->low_stock_level,
                 'LastModifiedBy' => $currentUser,
-                'expiration' => $request->expiration
+                'expiration' => $request->expiration,
+                'remarks' => $request->remarks
             ]);
             session()->flash('alert-success', 'Product created successfully!');
         } catch (\Exception $e) {
@@ -163,7 +164,8 @@ class ProductsComponent extends Component
                     'low_stock_level' => $request->low_stock_level,
                     'quantity' => $request->quantity,
                     'LastModifiedBy' => auth()->user()->name,
-                    'expiration' => $request->expiration
+                    'expiration' => $request->expiration,
+                    'remarks' => $request->remarks
                 ]);
                 session()->flash('alert-success', 'Inventory updated successfully!');
             } else {

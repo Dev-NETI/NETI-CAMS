@@ -22,7 +22,8 @@ class product extends Model
         'LastModifiedBy',
         'low_stock_level',
         'is_active',
-        'expiration'
+        'expiration',
+        'remarks'
     ];
 
     public function unit()
@@ -68,7 +69,7 @@ class product extends Model
 
     public function getFormattedExpirationDateAttribute()
     {
-        $expiration = $this->expiration === NULL ? 'No expiration' : Carbon::parse($this->expiration)->format('F d,Y') ;
+        $expiration = $this->expiration === NULL ? 'No expiration' : Carbon::parse($this->expiration)->format('F d,Y');
         return $expiration;
     }
 
@@ -93,5 +94,27 @@ class product extends Model
 
         $status = '<span class="badge ' . $class . '">' . $status . '</span>';
         return $status;
+    }
+
+    public function getFormattedDescriptionAttribute()
+    {
+        $remarks = $this->formatText($this->description);
+        
+        return $remarks ;
+    }
+
+    public function getFormattedRemarksAttribute()
+    {
+        $remarks = $this->formatText($this->remarks == NULL ? '' : $this->remarks);
+        
+        return $remarks ;
+    }
+
+    public function formatText($text)
+    {
+        $words = explode(' ', $text);
+        $wrapped_text = wordwrap(implode(' ', $words), 20, "\n", true);
+
+        return $wrapped_text;
     }
 }
