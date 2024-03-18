@@ -86,9 +86,9 @@
                                     <td>
                                         {{ $data->formatted_description }}
                                     </td>
-                                    <td>{{ $data->price }}</td>
+                                    @can('AuthorizeRolePolicy', 30) <td>{{ $data->price }}</td> @endcan
                                     <td>{{ $data->quantity }} {{ $data->unit->name }}</td>
-                                    <td>{{ $data->price * $data->quantity }}</td>
+                                    @can('AuthorizeRolePolicy', 30) <td>{{ $data->price * $data->quantity }}</td> @endcan
                                     <td @if (auth()->user()->usertype_id == 2) hidden @endif>{{ $data->department->name }}
                                     </td>
                                     <td>{{ $data->category->name }}</td>
