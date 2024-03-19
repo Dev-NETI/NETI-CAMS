@@ -55,15 +55,48 @@
                         <thead>
                             <tr>
                                 <th>Status</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                @can('AuthorizeRolePolicy', 30) <th>Price</th> @endcan
-                                <th>Quantity</th>
-                                @can('AuthorizeRolePolicy', 30) <th>Total</th> @endcan
+                                @can('AuthorizeRolePolicy', 32)
+                                    <th>
+                                        Name
+                                    </th>
+                                @endcan
+
+                                @can('AuthorizeRolePolicy', 33)
+                                    <th>
+                                        Description
+                                    </th>
+                                @endcan
+                                @can('AuthorizeRolePolicy', 30)
+                                    <th>Price</th>
+                                @endcan
+                                @can('AuthorizeRolePolicy', 34)
+                                    <th>
+                                        Quantity
+                                    </th>
+                                @endcan
+
+                                @can('AuthorizeRolePolicy', 30)
+                                    <th>Total</th>
+                                @endcan
                                 <th @if (auth()->user()->usertype_id == '2') hidden @endif>Department</th>
-                                <th>Category</th>
-                                <th>Supplier</th>
-                                <th>Remarks</th>
+                                @can('AuthorizeRolePolicy', 35)
+                                    <th>
+                                        Category
+                                    </th>
+                                @endcan
+
+                                @can('AuthorizeRolePolicy', 36)
+                                    <th>
+                                        Supplier
+                                    </th>
+                                @endcan
+
+                                @can('AuthorizeRolePolicy', 37)
+                                    <th>
+                                        Remarks
+                                    </th>
+                                @endcan
+
                                 <th>Modified By</th>
                                 <th>Last Modified</th>
                                 <th>Action</th>
@@ -82,18 +115,36 @@
                                             <span class="badge bg-success">On Stock</span>
                                         @endif
                                     </td>
-                                    <td>{{ $data->name }}</td>
-                                    <td>
-                                        {{ $data->formatted_description }}
+                                    @can('AuthorizeRolePolicy', 32)
+                                        <td>{{ $data->name }}</td>
+                                    @endcan
+
+                                    @can('AuthorizeRolePolicy', 33)
+                                        <td>
+                                            {{ $data->formatted_description }}
+                                        </td>
+                                    @endcan
+                                    @can('AuthorizeRolePolicy', 30)
+                                        <td>{{ $data->price }}</td>
+                                    @endcan
+                                    @can('AuthorizeRolePolicy', 34)
+                                        <td>{{ $data->quantity }} {{ $data->unit->name }}</td>
+                                    @endcan
+                                    @can('AuthorizeRolePolicy', 30)
+                                        <td>{{ $data->price * $data->quantity }}</td>
+                                    @endcan
+                                    <td @if (auth()->user()->usertype_id == 2) hidden @endif>
+                                        {{ $data->department->name }}
                                     </td>
-                                    @can('AuthorizeRolePolicy', 30) <td>{{ $data->price }}</td> @endcan
-                                    <td>{{ $data->quantity }} {{ $data->unit->name }}</td>
-                                    @can('AuthorizeRolePolicy', 30) <td>{{ $data->price * $data->quantity }}</td> @endcan
-                                    <td @if (auth()->user()->usertype_id == 2) hidden @endif>{{ $data->department->name }}
-                                    </td>
-                                    <td>{{ $data->category->name }}</td>
-                                    <td>{{ $data->supplier->name }}</td>
-                                    <td>{{ $data->formatted_remarks }}</td>
+                                    @can('AuthorizeRolePolicy', 35)
+                                        <td>{{ $data->category->name }}</td>
+                                    @endcan
+                                    @can('AuthorizeRolePolicy', 36)
+                                        <td>{{ $data->supplier->name }}</td>
+                                    @endcan
+                                    @can('AuthorizeRolePolicy', 37)
+                                        <td>{{ $data->formatted_remarks }}</td>
+                                    @endcan
                                     <td>{{ $data->LastModifiedBy }}</td>
                                     <td>{{ $data->formatted_updated_date }}</td>
                                     <td style="width:150px;">
