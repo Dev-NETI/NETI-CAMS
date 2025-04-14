@@ -34,14 +34,7 @@
                         </thead>
                         <tbody>
                             @foreach ($consumption_data as $data)
-                                <tr>
-                                    <td>{{ $data->product->name }}</td>
-                                    <td>{{ $data->product->category->name }}</td>
-                                    <td>{{ $data->quantity }} {{ $data->product->unit->name }}</td>
-                                    <td>{{ $data->purpose }}</td>
-                                    <td>{{ $data->DataModifier }}</td>
-                                    <td>{{ $data->date_executed }}</td>
-                                </tr>
+                                <livewire:components.logs.consumption-list-item-component :data="$data" :wire:key="$data->id" />
                             @endforeach
                         </tbody>
                     </table>

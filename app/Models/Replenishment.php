@@ -10,10 +10,12 @@ class Replenishment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'product_id' , 
-        'quantity' , 
-        'description' , 
-        'DataModifier'
+        'product_id',
+        'quantity',
+        'description',
+        'DataModifier',
+        'created_at',
+        'updated_at'
     ];
 
     public function product()

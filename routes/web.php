@@ -34,79 +34,73 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    
-    Route::prefix('dashboard')->as('dashboard.')->controller(DashboardViewComponent::class)->group(function(){
+
+    Route::prefix('dashboard')->as('dashboard.')->controller(DashboardViewComponent::class)->group(function () {
         Route::get('index', DashboardViewComponent::class)->name('index');
     });
 
-    Route::prefix('report')->as('report.')->controller(GenerateInventoryReportComponent::class)->group(function(){
+    Route::prefix('report')->as('report.')->controller(GenerateInventoryReportComponent::class)->group(function () {
         Route::get('inventory', 'inventory')->name('inventory');
     });
 
-    Route::prefix('categories')->as('categories.')->controller(CategoriesComponent::class)->group(function(){
+    Route::prefix('categories')->as('categories.')->controller(CategoriesComponent::class)->group(function () {
 
-        Route::get('index' , CategoriesComponent::class)->name('index');
-        Route::get('new' , 'new')->name('new');
-        Route::post('create' , 'create')->name('create');
-        Route::get('edit/{id}' , 'edit')->name('edit');
-        Route::put('update' , 'update')->name('update');
-
+        Route::get('index', CategoriesComponent::class)->name('index');
+        Route::get('new', 'new')->name('new');
+        Route::post('create', 'create')->name('create');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::put('update', 'update')->name('update');
     });
 
-    Route::prefix('department')->as('department.')->controller(DepartmentComponent::class)->group(function(){
+    Route::prefix('department')->as('department.')->controller(DepartmentComponent::class)->group(function () {
 
-        Route::get('index' , DepartmentComponent::class)->name('index');
-        Route::get('new' , 'new')->name('new');
-        Route::post('create' , 'create')->name('create');
-        Route::get('edit/{id}' , 'edit')->name('edit');
-        Route::put('update' , 'update')->name('update');
-
+        Route::get('index', DepartmentComponent::class)->name('index');
+        Route::get('new', 'new')->name('new');
+        Route::post('create', 'create')->name('create');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::put('update', 'update')->name('update');
     });
 
-    Route::prefix('supplier')->as('supplier.')->controller(SupplierComponent::class)->group(function(){
+    Route::prefix('supplier')->as('supplier.')->controller(SupplierComponent::class)->group(function () {
 
-        Route::get('index' , SupplierComponent::class)->name('index');
-        Route::get('new' , 'new')->name('new');
-        Route::post('create' , 'create')->name('create');
-        Route::get('edit/{id}' , 'edit')->name('edit');
-        Route::put('update' , 'update')->name('update');
-
-    });
-    
-    Route::prefix('products')->as('products.')->controller(ProductsComponent::class)->group(function(){
-
-        Route::get('index' , ProductsComponent::class)->name('index');
-        Route::get('new' , 'new')->name('new');
-        Route::post('create' , 'create')->name('create');
-        Route::get('edit/{id}' , 'edit')->name('edit');
-        Route::put('update' , 'update')->name('update');
-
+        Route::get('index', SupplierComponent::class)->name('index');
+        Route::get('new', 'new')->name('new');
+        Route::post('create', 'create')->name('create');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::put('update', 'update')->name('update');
     });
 
-    Route::get('Consumption/index' , ConsumptionComponent::class)->name('consumption.index');
-    Route::get('Replenishment/index' , ReplenishmentComponent::class)->name('replenishment.index');
+    Route::prefix('products')->as('products.')->controller(ProductsComponent::class)->group(function () {
 
-    Route::prefix('User')->as('user.')->controller(UserComponent::class)->group(function(){
-
-        Route::get('index' , UserComponent::class)->name('index');
-        Route::get('new' , 'new')->name('new');
-        Route::post('create' , 'create')->name('create');
-        Route::get('edit/{id}' , 'edit')->name('edit');
-        Route::put('update' , 'update')->name('update');
-
+        Route::get('index', ProductsComponent::class)->name('index');
+        Route::get('new', 'new')->name('new');
+        Route::post('create', 'create')->name('create');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::put('update', 'update')->name('update');
     });
 
-    Route::prefix('Unit')->as('unit.')->controller(UnitComponent::class)->group(function(){
+    Route::get('Consumption/index', ConsumptionComponent::class)->name('consumption.index');
+    Route::get('Replenishment/index', ReplenishmentComponent::class)->name('replenishment.index');
+
+    Route::prefix('User')->as('user.')->controller(UserComponent::class)->group(function () {
+
+        Route::get('index', UserComponent::class)->name('index');
+        Route::get('new', 'new')->name('new');
+        Route::post('create', 'create')->name('create');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::put('update', 'update')->name('update');
+    });
+
+    Route::prefix('Unit')->as('unit.')->controller(UnitComponent::class)->group(function () {
         Route::get('index', UnitComponent::class)->name('index');
         Route::get('create', 'create')->name('create');
-        Route::post('store','store')->name('store');
-        Route::get('edit/{id}' , 'edit')->name('edit');
-        Route::put('update' , 'update')->name('update');
-        Route::put('destroy' , 'destroy')->name('destroy');
+        Route::post('store', 'store')->name('store');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::put('update', 'update')->name('update');
+        Route::put('destroy', 'destroy')->name('destroy');
     });
 
     Route::get('/generate-password', [UserComponent::class, 'generatePassword'])->name('generate.password');
-    Route::get('Roles/index' , RolesComponent::class)->name('roles.index');
-    Route::get('User_roles/index/{id}' , UserRolesComponent::class)->name('user_roles.index');
-
+    Route::get('Roles/index', RolesComponent::class)->name('roles.index');
+    Route::get('User_roles/index/{id}', UserRolesComponent::class)->name('user_roles.index');
 });

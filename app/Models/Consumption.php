@@ -10,7 +10,11 @@ class Consumption extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'product_id' , 'quantity' , 'purpose' , 'DataModifier'
+        'product_id',
+        'quantity',
+        'purpose',
+        'DataModifier',
+        'created_at'
     ];
 
     public function product()
