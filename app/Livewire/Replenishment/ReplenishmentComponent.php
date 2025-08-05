@@ -69,7 +69,7 @@ class ReplenishmentComponent extends Component
             $query->whereDate('created_at', '<=', $this->endDate);
         }
 
-        $replenishment_data = $query->orderBy('created_at', 'desc')->paginate(10);
+        $replenishment_data = $query->orderBy('created_at', 'desc')->paginate(7);
 
         return view('livewire.replenishment.replenishment-component', [
             'replenishment_data' => $replenishment_data

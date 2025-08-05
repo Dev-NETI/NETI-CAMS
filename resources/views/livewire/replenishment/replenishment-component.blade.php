@@ -7,48 +7,51 @@
 
         <div class="card">
             <div class="card-body row">
-                <div class="col-md-12">
+                {{-- <div class="col-md-12">
                     <h5 class="card-title">Replenishment history</h5>
                     <div class="alert alert-info bg-info border-0 alert-dismissible fade show" role="alert">
                         This module functions as a record of the replenishment history of assets.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Filter Section -->
-                <div class="col-md-12 mb-3">
+                <div class="col-md-4 offset-md-8 mb-3 mt-2">
                     <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">Filter Options</h6>
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-2 small">Filter Options</h6>
 
                             <!-- Search Row -->
-                            <div class="row mb-3">
+                            <div class="row mb-1">
                                 <div class="col-md-12">
-                                    <label for="search" class="form-label">Search:</label>
-                                    <input type="text" wire:model="search" class="form-control" id="search"
-                                        placeholder="Search item, description, modified by...">
+                                    <label for="search" class="form-label small mb-1">Search:</label>
+                                    <input type="text" wire:model="search" class="form-control form-control-sm"
+                                        id="search" placeholder="Search...">
                                 </div>
                             </div>
 
                             <!-- Date Filter Row -->
-                            <div class="row mb-3">
+                            <div class="row mb-1">
                                 <div class="col-md-6">
-                                    <label for="startDate" class="form-label">Date From:</label>
-                                    <input type="date" wire:model="startDate" class="form-control" id="startDate">
+                                    <label for="startDate" class="form-label small mb-1">From:</label>
+                                    <input type="date" wire:model="startDate" class="form-control form-control-sm"
+                                        id="startDate">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="endDate" class="form-label">Date To:</label>
-                                    <input type="date" wire:model="endDate" class="form-control" id="endDate">
+                                    <label for="endDate" class="form-label small mb-1">To:</label>
+                                    <input type="date" wire:model="endDate" class="form-control form-control-sm"
+                                        id="endDate">
                                 </div>
                             </div>
 
                             <!-- Button Row -->
                             <div class="row">
                                 <div class="col-md-6">
-                                    <button wire:click="searchData" class="btn btn-primary w-100">Search</button>
+                                    <button wire:click="searchData" class="btn btn-primary btn-sm w-100">Search</button>
                                 </div>
                                 <div class="col-md-6">
-                                    <button wire:click="clearFilters" class="btn btn-secondary w-100">Clear All</button>
+                                    <button wire:click="clearFilters"
+                                        class="btn btn-secondary btn-sm w-100">Clear</button>
                                 </div>
                             </div>
                         </div>
@@ -57,15 +60,15 @@
 
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped">
+                        <table class="table table-hover table-striped small">
                             <thead>
                                 <tr>
-                                    <th>Item</th>
-                                    <th>Category</th>
-                                    <th>Quantity</th>
-                                    <th>Description</th>
-                                    <th>Replenished By</th>
-                                    <th>Date</th>
+                                    <th class="small">Item</th>
+                                    <th class="small">Category</th>
+                                    <th class="small">Quantity</th>
+                                    <th class="small">Description</th>
+                                    <th class="small">Replenished By</th>
+                                    <th class="small">Date</th>
                                 </tr>
                             </thead>
                             <tbody>

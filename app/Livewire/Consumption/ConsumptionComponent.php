@@ -71,7 +71,7 @@ class ConsumptionComponent extends Component
             $query->whereDate('created_at', '<=', $this->endDate);
         }
 
-        $consumption_data = $query->orderBy('created_at', 'desc')->paginate(10);
+        $consumption_data = $query->orderBy('created_at', 'desc')->paginate(6);
 
         return view('livewire.consumption.consumption-component', [
             'consumption_data' => $consumption_data
