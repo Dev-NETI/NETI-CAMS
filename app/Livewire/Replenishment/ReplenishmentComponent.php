@@ -7,6 +7,8 @@ use Livewire\WithPagination;
 use App\Models\Replenishment;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Exports\ReplenishmentExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReplenishmentComponent extends Component
 {
@@ -37,6 +39,16 @@ class ReplenishmentComponent extends Component
     {
         $this->reset(['search', 'startDate', 'endDate']);
         $this->resetPage();
+    }
+
+    public function exportToExcel()
+    {
+        $filename = 'replenishment_logs_' . date('Y-m-d_H-i-s') . '.xlsx';
+
+        return Excel::download(
+            new ReplenishmentExport($this->search, $this->startDate, $this->endDate),
+            $filename
+        );
     }
 
     public function render()
