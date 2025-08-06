@@ -45,13 +45,22 @@
                             </div>
 
                             <!-- Button Row -->
-                            <div class="row">
+                            <div class="row mb-2">
                                 <div class="col-md-6">
                                     <button wire:click="searchData" class="btn btn-primary btn-sm w-100">Search</button>
                                 </div>
                                 <div class="col-md-6">
                                     <button wire:click="clearFilters"
                                         class="btn btn-secondary btn-sm w-100">Clear</button>
+                                </div>
+                            </div>
+
+                            <!-- Export Button Row -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button wire:click="exportToExcel" class="btn btn-success btn-sm w-100">
+                                        <i class="bi bi-file-earmark-excel me-1"></i>Export to Excel
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +91,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    {{ $consumption_data->links('livewire::simple-bootstrap') }}
+                    {{ $consumption_data->links('vendor.livewire.bootstrap-pagination') }}
                 </div>
 
             </div>

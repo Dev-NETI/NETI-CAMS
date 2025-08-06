@@ -8,6 +8,8 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Exports\ConsumptionExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ConsumptionComponent extends Component
 {
@@ -39,6 +41,16 @@ class ConsumptionComponent extends Component
     {
         $this->reset(['search', 'startDate', 'endDate']);
         $this->resetPage();
+    }
+
+    public function exportToExcel()
+    {
+        $filename = 'consumption_logs_' . date('Y-m-d_H-i-s') . '.xlsx';
+
+        return Excel::download(
+            new ConsumptionExport($this->search, $this->startDate, $this->endDate),
+            $filename
+        );
     }
 
     public function render()
