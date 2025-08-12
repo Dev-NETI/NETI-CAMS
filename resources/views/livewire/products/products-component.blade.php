@@ -16,17 +16,19 @@
                     <x-notification-message />
                 </div>
 
-                <div class="col-md-4 mt-5">
-                    <div class="input-group">
-                        @if (auth()->user()->usertype_id === 1)
-                            <select class="form-control" wire:model.live="department">
-                                <option value="">Select Department</option>
-                                @foreach ($department_data as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        @endif
-                        <div class="input-group-prepend">
+                <div class="col-md-12 mt-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            @if (auth()->user()->usertype_id === 1)
+                                <select class="form-control" wire:model.live="department">
+                                    <option value="">Select Department</option>
+                                    @foreach ($department_data as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                        </div>
+                        <div class="col-md-3">
                             <select class="form-control" wire:model.live="category">
                                 <option value="">Select Category</option>
                                 @foreach ($category_data as $item)
@@ -34,17 +36,22 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 offset-md-4 mt-5">
-                    <div class="input-group">
-                        <input type="text" wire:model.live="search" class="form-control"
-                            placeholder="Search asset...">
-                        <div class="input-group-append">
-                            <button data-bs-toggle="modal" data-bs-target="#ExportModal" class="btn btn-danger"
-                                title="Export">
-                                <i class="bi bi-download"></i>
+                        <div class="col-md-6 d-flex justify-content-end">
+                            <button wire:click="exportToExcel" wire:loading.attr="disabled"
+                                wire:confirm="Are you sure you want to export the current inventory data to Excel?"
+                                class="btn btn-success"
+                                title="Export to Excel - Includes filtered data with category filtering">
+                                <span wire:loading.remove>
+                                    <i class="bi bi-download"></i> Export to Excel
+                                </span>
+                                <span wire:loading>
+                                    <i class="bi bi-arrow-clockwise"></i> Exporting...
+                                </span>
+                            </button>
+                            <button type="button" class="btn btn-outline-info ms-2" data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Export includes: Name, Description, Price, Quantity, Unit, Category, Supplier, Modified By, Last Modified, plus summary and filter information">
+                                <i class="bi bi-info-circle"></i>
                             </button>
                         </div>
                     </div>

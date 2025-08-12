@@ -1,5 +1,5 @@
-<div wire:ignore.self class="modal fade" id="ExportModal" tabindex="-1" role="dialog"
-    aria-labelledby="ExportModal" aria-hidden="true">
+<div wire:ignore.self class="modal fade" id="ExportModal" tabindex="-1" role="dialog" aria-labelledby="ExportModal"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,7 +14,7 @@
                             <select wire:model="category_id" class="form-control">
                                 <option value="">All</option>
                                 @foreach ($category as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
