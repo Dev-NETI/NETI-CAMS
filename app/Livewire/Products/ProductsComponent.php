@@ -10,15 +10,21 @@ use App\Models\product;
 use App\Models\Replenishment;
 use App\Models\supplier;
 use App\Models\unit;
+use App\Exports\ProductsExport;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductsComponent extends Component
 {
     use WithPagination;
     use AuthorizesRequests;
+
+    protected $layout = 'layouts.app';
+
     public $product_name;
     public $product_id;
     public $quantity;
@@ -26,7 +32,6 @@ class ProductsComponent extends Component
     public $unit;
     public $max_quantity;
     public $description;
-    public $search;
     public $department;
     public $department_id;
     public $category;
@@ -41,19 +46,17 @@ class ProductsComponent extends Component
     {
         if (auth()->user()->usertype_id == 2) {
             $product_data = product::where('department_id', '=', auth()->user()->department_id)
-                                    ->Where('name', 'LIKE', '%' . $this->search . '%')
-                                    ->Where('category_id', 'LIKE', '%' . $this->category_id . '%')
-                                    ->Where('is_active', true)
-                                    ->orderBy('name', 'asc')
-                                    ->paginate(10);
+                ->Where('category_id', 'LIKE', '%' . $this->category_id . '%')
+                ->Where('is_active', true)
+                ->orderBy('name', 'asc')
+                ->paginate(10);
             $category_data = Category::where('department_id', auth()->user()->department_id)->orderBy('name', 'asc')->get();
         } else {
-            $product_data = product::where('department_id', 'LIKE', '%' . $this->department_id. '%')
-                                    ->Where('name', 'LIKE', '%' . $this->search . '%')
-                                    ->Where('category_id', 'LIKE', '%' . $this->category_id . '%')
-                                    ->Where('is_active', true)
-                                    ->orderBy('name', 'asc')
-                                    ->paginate(10);
+            $product_data = product::where('department_id', 'LIKE', '%' . $this->department_id . '%')
+                ->Where('category_id', 'LIKE', '%' . $this->category_id . '%')
+                ->Where('is_active', true)
+                ->orderBy('name', 'asc')
+                ->paginate(10);
             $category_data = Category::where('department_id', $this->department_id)->orderBy('name', 'asc')->get();
         }
 
@@ -269,7 +272,7 @@ class ProductsComponent extends Component
             $update = $product->update([
                 'is_active' => false
             ]);
-            if(!$update){
+            if (!$update) {
                 session()->flash('alert-danger', 'Failed to delete product!');
             }
             session()->flash('alert-success', 'Product deleted successfully!');
@@ -278,4 +281,91 @@ class ProductsComponent extends Component
         }
     }
 
+    public function exportToExcel()
+    {
+        Gate::authorize('AuthorizeRolePolicy', 1); // Same permission as viewing products
+
+        try {
+            // Check if there are products to export
+            $productCount = $this->getProductCount();
+            if ($productCount === 0) {
+                session()->flash('alert-warning', 'No products found to export.');
+                return;
+            }
+
+            // Check if export is too large (more than 10,000 items)
+            if ($productCount > 10000) {
+                session()->flash('alert-warning', 'Export contains ' . number_format($productCount) . ' items. This may take a while to process.');
+            }
+
+            $filename = 'inventory_' . date('Y-m-d_H-i-s') . '.xlsx';
+
+            // Add success message
+            $deptName = $this->getDepartmentName();
+            $catName = $this->getCategoryName();
+
+            $message = "Export started successfully! Exporting {$productCount} items";
+            if ($deptName !== 'All Departments') {
+                $message .= " from {$deptName}";
+            }
+            if ($catName !== 'All Categories') {
+                $message .= " in {$catName}";
+            }
+            $message .= ". Your file will download shortly.";
+
+            session()->flash('alert-success', $message);
+
+            return Excel::download(
+                new ProductsExport($this->department_id, $this->category_id),
+                $filename
+            );
+        } catch (\Exception $e) {
+            session()->flash('alert-danger', 'Export failed: ' . $e->getMessage());
+            Log::error('Export failed: ' . $e->getMessage(), [
+                'user_id' => auth()->id(),
+                'department_id' => $this->department_id,
+                'category_id' => $this->category_id,
+                'search' => $this->search
+            ]);
+        }
+    }
+
+    private function getProductCount()
+    {
+        $query = product::query();
+
+        if (auth()->user()->usertype_id == 2) {
+            $query->where('department_id', auth()->user()->department_id);
+        } elseif ($this->department_id) {
+            $query->where('department_id', $this->department_id);
+        }
+
+        if ($this->category_id) {
+            $query->where('category_id', $this->category_id);
+        }
+
+        $query->where('is_active', true);
+
+        return $query->count();
+    }
+
+    private function getDepartmentName()
+    {
+        if (auth()->user()->usertype_id == 2) {
+            return auth()->user()->department->name ?? 'User Department';
+        } elseif ($this->department_id) {
+            $dept = department::find($this->department_id);
+            return $dept ? $dept->name : 'Specific Department';
+        }
+        return 'All Departments';
+    }
+
+    private function getCategoryName()
+    {
+        if ($this->category_id) {
+            $cat = Category::find($this->category_id);
+            return $cat ? $cat->name : 'Specific Category';
+        }
+        return 'All Categories';
+    }
 }
